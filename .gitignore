@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# Local env
+.env
+
+# Data artifacts
+/data/raw/*.json
+/data/raw/*.jsonl
+/data/raw/*.csv
+/data/raw/*.html
+/data/processed/*.json
+/data/processed/*.jsonl
+/data/processed/*.csv
+/data/processed/*.pkl
+/data/processed/*.npz
+/data/processed/*.npy
+/data/processed/reports/
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/

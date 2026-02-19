@@ -1,0 +1,32 @@
+[
+  {
+    "question": "What events are happening today on campus?",
+    "intent": "event",
+    "reference_answer": "Events listed from UMBC event feed with titles and times.",
+    "expected_source_types": ["event"]
+  },
+  {
+    "question": "When is the add/drop deadline for Spring 2026?",
+    "intent": "time",
+    "reference_answer": "Academic calendar deadlines for Spring 2026.",
+    "expected_source_types": ["calendar"]
+  },
+  {
+    "question": "Where is CMSC 601 offered this term?",
+    "intent": "class_schedule",
+    "reference_answer": "Course schedule should include building and room for CMSC course.",
+    "expected_source_types": ["class_schedule"]
+  },
+  {
+    "question": "Who teaches DATA 610 and when does it meet?",
+    "intent": "class_schedule",
+    "reference_answer": "Instructor name and meeting time from class schedule.",
+    "expected_source_types": ["class_schedule"]
+  },
+  {
+    "question": "Where is Sherman Hall?",
+    "intent": "location",
+    "reference_answer": "Location-related record should reference building context.",
+    "expected_source_types": ["class_schedule", "event"]
+  }
+]
