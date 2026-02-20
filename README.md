@@ -1,6 +1,6 @@
 # AI-Powered Campus Knowledge Assistant Using Institutional Data (UMBC)
 
-A master’s-level end-to-end AI system that answers natural-language campus questions by combining:
+
 
 - Real institutional data ingestion (UMBC events + registrar academic calendars)
 - Separate backend databases for events, calendars, and class catalog
