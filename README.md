@@ -11,6 +11,12 @@
 - Evaluation with accuracy/precision/recall/F1, retrieval quality, correctness proxy, and latency
 - A full web app (FastAPI + custom frontend) for ingestion, indexing, evaluation, and chat
 
+## Live Launch
+
+[![Launch Live Demo](https://img.shields.io/badge/Launch-Live%20Demo-F4C236?style=for-the-badge&logo=rocket&logoColor=black)](https://your-live-app-url)
+
+Replace `https://your-live-app-url` with your deployed public assistant URL.
+
 ## 1) Data Policy (Real First, Synthetic Fallback)
 
 This project follows your requirement strictly:
