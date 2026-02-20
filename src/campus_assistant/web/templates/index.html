@@ -18,104 +18,42 @@
         <span class="badge">AI Campus</span>
         <h1>{{ app_name }}</h1>
       </div>
-      <a class="top-link" href="https://my.umbc.edu/events" target="_blank" rel="noreferrer">UMBC Events</a>
+      <div class="top-actions">
+        <a class="btn btn-studio-link" href="/studio/login">Data Studio Login</a>
+        <a class="top-link" href="https://my.umbc.edu/events" target="_blank" rel="noreferrer">UMBC Events</a>
+      </div>
     </header>
 
     <main class="container">
-      <section class="hero card">
-        <p class="kicker">Institutional Data + RAG + NLP Normalization</p>
-        <h2>Natural-language campus assistant with typo-tolerant understanding.</h2>
-        <p>
-          Real UMBC event and academic calendar data is ingested directly. Class schedule falls back to synthetic records only when public access is gated.
-        </p>
-      </section>
-
-      <section class="stats-grid" id="statusCards">
-        <article class="stat card">
-          <p class="label">Documents</p>
-          <p class="value" id="statDocuments">-</p>
-        </article>
-        <article class="stat card">
-          <p class="label">Vector Index</p>
-          <p class="value" id="statIndex">Missing</p>
-        </article>
-        <article class="stat card">
-          <p class="label">Retriever Backend</p>
-          <p class="value" id="statBackend">-</p>
-        </article>
-        <article class="stat card">
-          <p class="label">Health</p>
-          <p class="value" id="statHealth">Checking...</p>
-        </article>
-      </section>
-
-      <section class="workspace">
-        <aside class="panel card">
-          <h3>Pipeline Control</h3>
-          <p class="muted">Run ingestion, indexing, and evaluation from here.</p>
-
-          <label for="syntheticSize">Synthetic class fallback size</label>
-          <div class="slider-row">
-            <input type="range" id="syntheticSize" min="20" max="500" step="10" value="120" />
-            <span id="syntheticSizeValue">120</span>
-          </div>
-
-          <div class="actions">
-            <button id="btnIngest" class="btn btn-primary">Ingest Data</button>
-            <button id="btnBuild" class="btn btn-secondary">Build Index</button>
-            <button id="btnEval" class="btn btn-ghost">Run Evaluation</button>
-          </div>
-
-          <div class="source-list">
-            <h4>Live Data Sources</h4>
-            <div class="source-item">
-              <span class="source-type real">REAL</span>
-              <div>
-                <strong>myUMBC Events</strong>
-                <small>https://my.umbc.edu/events</small>
-              </div>
+      <section class="assistant-shell card">
+        <div class="assistant-layout">
+          <aside class="rail related-rail">
+            <div class="rail-head">
+              <h3>Related Information</h3>
             </div>
-            <div class="source-item">
-              <span class="source-type real">REAL</span>
-              <div>
-                <strong>Registrar Calendars</strong>
-                <small>https://registrar.umbc.edu/calendars/academic-calendars/</small>
-              </div>
+            <p class="rail-subtitle">Query-matched class details, deadlines, and evidence.</p>
+            <div id="relatedInfoList" class="related-list"></div>
+          </aside>
+
+          <section class="chat-rail">
+            <div class="chat-stage">
+              <div id="chatMessages" class="chat-messages"></div>
             </div>
-            <div class="source-item">
-              <span class="source-type hybrid">REAL/SYNTH</span>
-              <div>
-                <strong>Class Search Public</strong>
-                <small>https://umbc.edu/go/class-search-public</small>
-              </div>
+
+            <form id="chatForm" class="chat-input-row">
+              <input id="chatInput" placeholder="Ask a campus question... e.g., what classes are listed for upcoming semester in data stream?" autocomplete="off" />
+              <button class="btn btn-primary" type="submit">Send</button>
+            </form>
+          </section>
+
+          <aside class="rail promo-rail">
+            <div class="rail-head">
+              <h3>Campus Promotions</h3>
+              <button id="btnRefreshPromotions" class="btn btn-mini" type="button">Refresh</button>
             </div>
-          </div>
-
-          <pre class="json-box" id="pipelineOutput">Run an action to see output.</pre>
-        </aside>
-
-        <section class="panel card">
-          <h3>Ask Assistant</h3>
-          <p class="muted">Spelling mistakes and uneven English are auto-corrected before retrieval.</p>
-
-          <div id="chatMessages" class="chat-messages"></div>
-
-          <form id="chatForm" class="chat-input-row">
-            <input id="chatInput" placeholder="e.g., wen is sprng 2026 add drop dline" autocomplete="off" />
-            <button class="btn btn-primary" type="submit">Send</button>
-          </form>
-        </section>
-      </section>
-
-      <section class="card eval-panel">
-        <h3>Evaluation</h3>
-        <div id="evalMetrics" class="eval-grid">
-          <article><p>Intent Accuracy</p><strong>-</strong></article>
-          <article><p>Intent F1</p><strong>-</strong></article>
-          <article><p>HitRate@5</p><strong>-</strong></article>
-          <article><p>MRR</p><strong>-</strong></article>
-          <article><p>Avg Latency (ms)</p><strong>-</strong></article>
-          <article><p>P95 Latency (ms)</p><strong>-</strong></article>
+            <p class="rail-subtitle">Announcements and promotions campus wants students to know.</p>
+            <div id="promotionList" class="promotion-list"></div>
+          </aside>
         </div>
       </section>
     </main>

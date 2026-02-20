@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ app_name }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/studio.css" />
+  </head>
+  <body class="studio-body">
+    <header class="studio-topbar">
+      <div class="studio-brand">
+        <span class="badge">Data Studio</span>
+        <h1>{{ app_name }}</h1>
+      </div>
+      <div class="studio-top-actions">
+        <a class="link-btn" href="/">Open Assistant</a>
+        <button id="btnStudioLogout" class="btn btn-ghost" type="button">Logout</button>
+      </div>
+    </header>
+
+    <main class="studio-container">
+      <section class="studio-hero card">
+        <p class="studio-kicker">AUTHORIZED DATA PROVIDER</p>
+        <h2>Ingest and manage campus databases</h2>
+        <p>Events, calendars, and class data managed here are consumed by the public assistant website.</p>
+      </section>
+
+      <section class="studio-stats">
+        <article class="status-pill">
+          <p>Documents</p>
+          <strong id="studioStatDocuments">-</strong>
+        </article>
+        <article class="status-pill">
+          <p>Events DB</p>
+          <strong id="studioStatEvents">-</strong>
+        </article>
+        <article class="status-pill">
+          <p>Calendars DB</p>
+          <strong id="studioStatCalendars">-</strong>
+        </article>
+        <article class="status-pill">
+          <p>Classes DB</p>
+          <strong id="studioStatClasses">-</strong>
+        </article>
+        <article class="status-pill">
+          <p>Upcoming Term</p>
+          <strong id="studioStatUpcoming">-</strong>
+        </article>
+        <article class="status-pill">
+          <p>Index</p>
+          <strong id="studioStatIndex">Missing</strong>
+        </article>
+      </section>
+
+      <section class="studio-layout">
+        <section class="studio-panel card">
+          <h3>Pipeline Ingestion</h3>
+          <label for="syntheticSize">Synthetic class fallback size</label>
+          <div class="slider-row">
+            <input type="range" id="syntheticSize" min="20" max="500" step="10" value="120" />
+            <span id="syntheticSizeValue">120</span>
+          </div>
+          <div class="actions">
+            <button id="btnIngest" class="btn btn-primary" type="button">Ingest Data</button>
+            <button id="btnBuild" class="btn btn-secondary" type="button">Build Index</button>
+            <button id="btnEval" class="btn btn-ghost" type="button">Run Evaluation</button>
+          </div>
+        </section>
+
+        <section class="studio-panel card">
+          <h3>Class CSV Upload</h3>
+          <label for="classCsvFile">Class CSV file</label>
+          <input id="classCsvFile" type="file" accept=".csv,text/csv" />
+          <button id="btnUploadClassCsv" class="btn btn-primary" type="button">Upload / Update Classes</button>
+          <p class="muted">
+            Required: <code>term</code>, <code>course_code</code>, <code>course_title</code>
+          </p>
+        </section>
+
+        <section class="studio-panel card studio-wide">
+          <h3>Manual JSON Ingestion</h3>
+          <p class="muted">Use this when departments send structured records from other systems.</p>
+          <label for="manualSourceType">Target Database</label>
+          <select id="manualSourceType">
+            <option value="events">Events DB</option>
+            <option value="calendars">Calendars DB</option>
+            <option value="classes">Classes DB</option>
+          </select>
+          <label for="manualPayload">JSON payload</label>
+          <textarea id="manualPayload" rows="8" placeholder='[{"term":"Fall 2026","course_code":"DATA 601","course_title":"Statistical Learning","section":"01"}]'></textarea>
+          <button id="btnManualIngest" class="btn btn-secondary" type="button">Ingest JSON Payload</button>
+        </section>
+
+        <section class="studio-panel card studio-wide">
+          <h3>Provider Endpoints</h3>
+          <p class="muted">These endpoints expose data served by this studio for downstream consumers.</p>
+          <div class="provider-list">
+            <code>/api/provider/status</code>
+            <code>/api/provider/events</code>
+            <code>/api/provider/calendars</code>
+            <code>/api/provider/classes</code>
+          </div>
+        </section>
+
+        <section class="studio-panel card studio-wide">
+          <h3>Output</h3>
+          <pre class="json-box" id="pipelineOutput">Run an action to see output.</pre>
+        </section>
+
+        <section class="studio-panel card studio-wide">
+          <h3>Evaluation</h3>
+          <div id="evalMetrics" class="eval-grid">
+            <article><p>Intent Accuracy</p><strong>-</strong></article>
+            <article><p>Intent F1</p><strong>-</strong></article>
+            <article><p>HitRate@5</p><strong>-</strong></article>
+            <article><p>MRR</p><strong>-</strong></article>
+            <article><p>Avg Latency (ms)</p><strong>-</strong></article>
+            <article><p>P95 Latency (ms)</p><strong>-</strong></article>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <div id="studioToast" class="toast"></div>
+    <script>
+      window.APP_DEFAULT_TOP_K = {{ top_k }};
+    </script>
+    <script src="/static/js/studio.js"></script>
+  </body>
+</html>

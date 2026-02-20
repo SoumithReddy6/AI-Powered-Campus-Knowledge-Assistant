@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ app_name }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/studio.css" />
+  </head>
+  <body class="studio-login-body">
+    <main class="login-shell">
+      <section class="login-card">
+        <p class="login-kicker">Protected Data Provider</p>
+        <h1>UMBC Data Studio</h1>
+        <p class="login-subtext">Authorized administrators can ingest and update campus databases from this console.</p>
+
+        <form id="studioLoginForm" class="login-form">
+          <label for="studioPassword">Studio Password</label>
+          <input id="studioPassword" type="password" placeholder="Enter authorized password" autocomplete="current-password" />
+          <button class="btn btn-primary" type="submit">Sign In</button>
+        </form>
+
+        <p class="login-meta">Public assistant is available at <a href="/">/</a>.</p>
+      </section>
+    </main>
+
+    <div id="loginToast" class="toast"></div>
+    <script src="/static/js/studio_login.js"></script>
+  </body>
+</html>

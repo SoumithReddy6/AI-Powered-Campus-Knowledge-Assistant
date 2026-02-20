@@ -22,6 +22,8 @@ venv/
 /data/processed/*.npz
 /data/processed/*.npy
 /data/processed/reports/
+/data/db/*.db
+!/data/db/.gitkeep
 
 # OS/editor
 .DS_Store

@@ -3,7 +3,8 @@
 A master’s-level end-to-end AI system that answers natural-language campus questions by combining:
 
 - Real institutional data ingestion (UMBC events + registrar academic calendars)
-- Synthetic fallback generation (class schedule only when public class search is inaccessible)
+- Separate backend databases for events, calendars, and class catalog
+- Admin-managed class catalog upload/update API
 - Intent classification + NER-style entity extraction
 - Query normalization for typo-tolerant and uneven-English prompts
 - Retrieval-Augmented Generation (RAG) with semantic retrieval
@@ -32,6 +33,7 @@ This project follows your requirement strictly:
    - Strategy:
      - If public schedule table is accessible: parse real classes.
      - If auth/login/SSO/no table: generate synthetic graduate-level class schedules with deterministic seed.
+   - After ingestion, classes are written into dedicated Class DB and can later be replaced/updated by admin upload.
 
 ## 2) System Architecture
 
@@ -48,26 +50,34 @@ This project follows your requirement strictly:
      - Dense embeddings (`sentence-transformers`) when available.
      - Automatic fallback to TF-IDF semantic retrieval.
 
-4. RAG answering
+4. Multi-DB query routing
+   - Class-related questions route directly to Class DB.
+   - Events/calendar/general questions route to RAG index.
+   - Example: “What are the classes listed for upcoming semester in Data stream?”
+     returns class list from Class DB for department `DATA` and next term.
+
+5. RAG answering
    - Query intent + entities + retrieval context.
    - Optional OpenAI generation if `OPENAI_API_KEY` exists.
    - Otherwise deterministic evidence-grounded template answers.
 
-5. Evaluation
+6. Evaluation
    - Intent: accuracy, precision, recall, F1.
    - Retrieval: hit-rate@5, MRR.
    - Response quality: token-overlap correctness proxy.
    - Performance: avg and p95 latency.
 
-6. Web application
+7. Web application
    - FastAPI backend APIs for ingestion, indexing, chat, and evaluation.
    - Custom HTML/CSS/JS frontend (responsive UI, evidence panel, metrics cards).
+   - Admin panel for class CSV upload/update.
 
 ## 3) Repository Layout
 
 ```
 .
 ├── data/
+│   ├── db/
 │   ├── eval/qa_gold.json
 │   ├── raw/
 │   ├── processed/
@@ -129,13 +139,38 @@ http://localhost:8000
 Features in the website:
 
 - Ingest UMBC real data with one click
-- Automatic synthetic fallback only for class schedule when needed
+- Automatic class DB sync after ingestion
 - Build vector index from the UI
 - Ask natural-language questions in chat (with auto-correction of spelling and uneven English)
+- Route class questions to Class DB (no vector index dependency for class catalog)
+- Admin upload/update class CSV from the UI
 - Inspect retrieved evidence and metadata
 - Run evaluation and view accuracy/retrieval/latency metrics
 
-## 6) CLI Pipeline (Secondary)
+## 6) Class Database Administration
+
+Set admin token:
+
+```bash
+export ADMIN_API_TOKEN="your_secure_admin_token"
+```
+
+Use the UI Admin section to upload CSV, or API:
+
+```bash
+curl -X POST http://localhost:8000/api/admin/classes/upload-csv \\
+  -H 'Content-Type: application/json' \\
+  -d '{"admin_token":"your_secure_admin_token","csv_text":"term,course_code,course_title\\nFall 2026,DATA 601,Statistical Learning"}'
+```
+
+Class DB API endpoints:
+
+- `POST /api/admin/classes/upload-csv`
+- `POST /api/admin/classes/upsert`
+- `GET /api/admin/classes?admin_token=...`
+- `GET /api/classes/catalog?department=DATA&term=Fall%202026`
+
+## 7) CLI Pipeline (Secondary)
 
 ### A) Ingest data (real first, synthetic fallback for classes)
 
@@ -165,7 +200,7 @@ Evaluation report is saved at:
 
 - `data/processed/evaluation_report.json`
 
-## 7) Optional OpenAI Integration
+## 8) Optional OpenAI Integration
 
 Set:
 
@@ -176,7 +211,7 @@ export OPENAI_MODEL="gpt-4o-mini"
 
 Without this, the project still works with local fallback generation.
 
-## 8) Master’s-Level Extensions You Can Add
+## 9) Master’s-Level Extensions You Can Add
 
 1. Supervised intent model fine-tuning on annotated campus queries.
 2. Hybrid retriever (BM25 + dense) with re-ranking.
@@ -185,7 +220,7 @@ Without this, the project still works with local fallback generation.
 5. User simulation and online evaluation loops.
 6. Data drift monitoring for calendar and event changes.
 
-## 9) Testing
+## 10) Testing
 
 ```bash
 pytest -q
@@ -196,8 +231,9 @@ Included tests validate:
 - Class schedule synthetic fallback behavior
 - Core intent classification
 - Entity extraction baseline
+- Class DB query parsing/routing for upcoming semester department queries
 
-## 10) Git Push
+## 11) Git Push
 
 If this folder is not initialized yet:
 

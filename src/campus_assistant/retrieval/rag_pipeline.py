@@ -5,12 +5,13 @@ import textwrap
 import time
 from dataclasses import asdict
 
-from campus_assistant.config import SETTINGS
 from campus_assistant.data_models import QueryResult
+from campus_assistant.llm import answer_with_domain_assistant
 from campus_assistant.nlp.entity_extractor import CampusEntityExtractor
 from campus_assistant.nlp.intent import IntentClassifier
 from campus_assistant.nlp.query_normalizer import QueryNormalizer
 from campus_assistant.retrieval.vector_index import VectorIndex
+from campus_assistant.config import SETTINGS
 
 logger = logging.getLogger(__name__)
 
@@ -120,31 +121,12 @@ def _source_filter_for_intent(intent: str) -> set[str] | None:
 
 
 def _try_openai_answer(query: str, context: str) -> str | None:
-    if not SETTINGS.openai_api_key:
-        return None
-
     try:
-        from openai import OpenAI
-
-        client = OpenAI(api_key=SETTINGS.openai_api_key)
-        response = client.responses.create(
-            model=SETTINGS.openai_model,
-            input=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You are a UMBC campus assistant. "
-                        "Only answer using provided context. If missing info, say so clearly."
-                    ),
-                },
-                {
-                    "role": "user",
-                    "content": f"Question: {query}\n\nContext:\n{context}",
-                },
-            ],
-            temperature=0.1,
+        return answer_with_domain_assistant(
+            query=query,
+            context=context,
+            route_label="rag_retrieval",
         )
-        return response.output_text.strip()
     except Exception as exc:
-        logger.warning("OpenAI generation failed, using fallback answerer: %s", exc)
+        logger.warning("Domain assistant generation failed, using fallback answerer: %s", exc)
         return None

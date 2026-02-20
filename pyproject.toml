@@ -21,10 +21,10 @@ dependencies = [
   "jinja2>=3.1.0",
   "pyspellchecker>=0.8.1",
   "rapidfuzz>=3.9.0",
+  "openai>=1.40.0",
 ]
 
 [project.optional-dependencies]
-llm = ["openai>=1.40.0"]
 dense = ["sentence-transformers>=3.0.0", "torch>=2.3.0"]
 dev = ["pytest>=8.0.0", "ruff>=0.6.0"]
 
