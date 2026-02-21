@@ -13,9 +13,9 @@
 
 ## Live Launch
 
-[![Launch Live Demo](https://img.shields.io/badge/Launch-Live%20Demo-F4C236?style=for-the-badge&logo=rocket&logoColor=black)](https://your-live-app-url)
+[![Launch Live Demo](https://img.shields.io/badge/Launch-Live%20Demo-F4C236?style=for-the-badge&logo=rocket&logoColor=black)](https://ai-powered-campus-knowledge-assistant.onrender.com)
 
-Replace `https://your-live-app-url` with your deployed public assistant URL.
+
 
 ## 1) Data Policy (Real First, Synthetic Fallback)
 
