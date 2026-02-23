@@ -85,20 +85,21 @@ def _assistant_api_answer(
 
 def _responses_api_answer(*, client: Any, system_prompt: str, prompt: str) -> str | None:
     try:
-        response = client.responses.create(
+        response = client.chat.completions.create(
             model=SETTINGS.openai_model,
-            input=[
+            messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": prompt},
             ],
             temperature=0.1,
+            max_tokens=512,
         )
-        text = _get_attr(response, "output_text", None)
-        if text:
-            return str(text).strip()
+        choice = response.choices[0] if response.choices else None
+        if choice and choice.message and choice.message.content:
+            return choice.message.content.strip()
         return None
     except Exception as exc:
-        logger.warning("Responses API request failed: %s", exc)
+        logger.warning("Chat completions API request failed: %s", exc)
         return None
 
 
