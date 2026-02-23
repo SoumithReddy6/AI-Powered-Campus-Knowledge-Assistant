@@ -28,5 +28,95 @@
     "intent": "location",
     "reference_answer": "Location-related record should reference building context.",
     "expected_source_types": ["class_schedule", "event"]
+  },
+  {
+    "question": "Are there any workshops this week?",
+    "intent": "event",
+    "reference_answer": "List of workshop events from the UMBC events feed.",
+    "expected_source_types": ["event"]
+  },
+  {
+    "question": "What time does the library open?",
+    "intent": "facility_hours",
+    "reference_answer": "Library hours information from campus records.",
+    "expected_source_types": ["event", "calendar"]
+  },
+  {
+    "question": "When is the graduation ceremony for Fall 2026?",
+    "intent": "time",
+    "reference_answer": "Commencement date from academic calendar for Fall 2026.",
+    "expected_source_types": ["calendar"]
+  },
+  {
+    "question": "What DATA courses are available for Fall 2026?",
+    "intent": "class_schedule",
+    "reference_answer": "List of DATA department courses for Fall 2026 semester.",
+    "expected_source_types": ["class_schedule"]
+  },
+  {
+    "question": "Where is the ITE building located?",
+    "intent": "location",
+    "reference_answer": "Location information about the ITE building on campus.",
+    "expected_source_types": ["class_schedule", "event"]
+  },
+  {
+    "question": "What is the last day to withdraw from classes in Spring 2026?",
+    "intent": "time",
+    "reference_answer": "Withdrawal deadline from academic calendar for Spring 2026.",
+    "expected_source_types": ["calendar"]
+  },
+  {
+    "question": "Is there a career fair event coming up?",
+    "intent": "event",
+    "reference_answer": "Career fair event details from UMBC events feed.",
+    "expected_source_types": ["event"]
+  },
+  {
+    "question": "What section of CMSC 341 is available this semester?",
+    "intent": "class_schedule",
+    "reference_answer": "Section details for CMSC 341 including instructor and meeting time.",
+    "expected_source_types": ["class_schedule"]
+  },
+  {
+    "question": "When does the dining hall close on weekdays?",
+    "intent": "facility_hours",
+    "reference_answer": "Dining hall hours for weekdays from campus records.",
+    "expected_source_types": ["event", "calendar"]
+  },
+  {
+    "question": "Where can I find financial aid office?",
+    "intent": "location",
+    "reference_answer": "Location of the financial aid office on campus.",
+    "expected_source_types": ["event", "class_schedule"]
+  },
+  {
+    "question": "What STAT classes are offered next term?",
+    "intent": "class_schedule",
+    "reference_answer": "Statistics department course offerings for next term.",
+    "expected_source_types": ["class_schedule"]
+  },
+  {
+    "question": "Are there any seminars or talks happening tomorrow?",
+    "intent": "event",
+    "reference_answer": "Seminar and talk events from UMBC event feed.",
+    "expected_source_types": ["event"]
+  },
+  {
+    "question": "What is the registration deadline for Summer 2026?",
+    "intent": "time",
+    "reference_answer": "Registration deadline from academic calendar for Summer 2026.",
+    "expected_source_types": ["calendar"]
+  },
+  {
+    "question": "Who is the instructor for DATA 601?",
+    "intent": "class_schedule",
+    "reference_answer": "Instructor name for DATA 601 from class schedule.",
+    "expected_source_types": ["class_schedule"]
+  },
+  {
+    "question": "What room is MATH 221 held in?",
+    "intent": "class_schedule",
+    "reference_answer": "Room and building information for MATH 221.",
+    "expected_source_types": ["class_schedule"]
   }
 ]
