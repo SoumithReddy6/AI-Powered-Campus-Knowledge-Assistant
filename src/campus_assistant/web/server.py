@@ -5,6 +5,7 @@ import sqlite3
 import secrets
 import textwrap
 import time
+from contextlib import asynccontextmanager
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Literal, Optional
@@ -46,7 +47,15 @@ INDEX_PATH = PROCESSED_DATA_DIR / "vector_index.pkl"
 STUDIO_SESSION_COOKIE = "studio_session"
 STUDIO_SESSION_TTL_SECONDS = 60 * 60 * 10
 
-app = FastAPI(title="UMBC Campus Knowledge Assistant", version="2.0.0")
+@asynccontextmanager
+async def lifespan(application: FastAPI):
+    ensure_directories()
+    init_databases()
+    _bootstrap_query_normalizer_from_docs()
+    yield
+
+
+app = FastAPI(title="UMBC Campus Knowledge Assistant", version="2.0.0", lifespan=lifespan)
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
@@ -107,13 +116,6 @@ class StudioClassUpsertRequest(BaseModel):
 class StudioManualIngestRequest(BaseModel):
     source_type: Literal["events", "calendars", "classes"]
     payload_json: str
-
-
-@app.on_event("startup")
-def startup() -> None:
-    ensure_directories()
-    init_databases()
-    _bootstrap_query_normalizer_from_docs()
 
 
 @app.get("/", response_class=HTMLResponse)
